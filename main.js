@@ -41,7 +41,6 @@ define(function (require, exports, module) {
     var DocumentManager     = brackets.getModule("document/DocumentManager"),
         Commands            = brackets.getModule("command/Commands"),
         CommandManager      = brackets.getModule("command/CommandManager"),
-        CSSAgent            = brackets.getModule("LiveDevelopment/Agents/CSSAgent"),
         EditorManager       = brackets.getModule("editor/EditorManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Menus               = brackets.getModule("command/Menus"),
@@ -105,14 +104,7 @@ define(function (require, exports, module) {
                 var cssSavePath = doc.file.fullPath.replace(".less", ".css");
                 
                 LessParser.parseLessFile(doc.file, cssSavePath)
-                    .done(function (response) {
-                        _hideErrorMessages();
-                        // Refresh css file
-                        var cssDoc = DocumentManager.getDocumentForPath(cssSavePath);
-                        DocumentManager.getDocumentForPath(cssSavePath).done(function(cssDoc) {
-                            CSSAgent.reloadCSSForDocument(cssDoc);
-                        });
-                    })
+                    .done(function (response) { _hideErrorMessages(); })
                     .fail(function (err) { _showErrorMessage(err.Text); console.log(err); });
             }
             
